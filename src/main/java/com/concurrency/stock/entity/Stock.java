@@ -3,10 +3,7 @@ package com.concurrency.stock.entity;
 import lombok.NoArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -18,6 +15,9 @@ public class Stock {
     private Long productId;
 
     private Long quantity;
+
+    @Version
+    private Long version;
 
     public Stock(Long productId, Long quantity) {
         this.productId = productId;

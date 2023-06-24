@@ -1,4 +1,4 @@
-package com.concurrency.stock.service;
+package com.concurrency.stock.facade;
 
 import com.concurrency.stock.entity.Stock;
 import com.concurrency.stock.repository.StockRepository;
@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
-class PessimisticLockServiceTest {
+class NamedLockStockFacadeTest {
 
     @Autowired
-    PessimisticLockService stockService;
+    NamedLockStockFacade stockService;
 
     @Autowired
     StockRepository stockRepository;
@@ -56,8 +56,10 @@ class PessimisticLockServiceTest {
 
         latch.await();
 
-        System.out.println(System.currentTimeMillis() - startTime);
+        System.out.println(System.currentTimeMillis() - startTime); // Optimistic의 경우 Version이 안맞을경우 Lock이 걸리기에 Select를 다시 재시도 하므로,
+        // 읽기 > 쓰기 가 많은 경우 사용하는것이 좋다
         Stock stock = stockRepository.findById(1L).orElseThrow();
         assertEquals(0, stock.getQuantity());
     }
+
 }
